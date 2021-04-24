@@ -117,7 +117,12 @@ namespace CreditCardApplications.Tests
 
             mockValidator.Setup(x => x.IsValid(It.IsAny<string>())).Returns(true);
             //mockValidator.Setup(x => x.LicenseKey).Returns("EXPIRED");
-            mockValidator.Setup(x => x.LicenseKey).Returns(GetLicenseKeyExpiredString);
+            //mockValidator.Setup(x => x.LicenseKey).Returns(GetLicenseKeyExpiredString);
+            var mockLicenseData = new Mock<ILicenseData>();
+            mockLicenseData.Setup(x => x.LicenseKey).Returns("EXPIRED");
+            var mockServiceInfo = new Mock<IServiceInformation>();
+            mockServiceInfo.Setup(x => x.License).Returns(mockLicenseData.Object);
+            mockValidator.Setup(x => x.ServiceInformation).Returns(mockServiceInfo.Object);
 
             var sut = new CreditCardApplicationEvaluator(mockValidator.Object);
 
