@@ -1,6 +1,7 @@
 using System;
 using Xunit;
 using Moq;
+using Moq.Protected;
 using System.Collections.Generic;
 
 namespace CreditCardApplications.Tests
@@ -341,7 +342,10 @@ namespace CreditCardApplications.Tests
             Mock<IFrequentFlyerNumberValidator> mockValidator = new Mock<IFrequentFlyerNumberValidator>();
 
             Mock<FraudLookup> mockFraudLookup = new Mock<FraudLookup>();
-            mockFraudLookup.Setup(x => x.IsFraudRisk(It.IsAny<CreditCardApplication>()))
+            //mockFraudLookup.Setup(x => x.IsFraudRisk(It.IsAny<CreditCardApplication>()))
+            //    .Returns(true);   // this no only work since not virtual any more
+            mockFraudLookup.Protected()
+                .Setup<bool>("CheckApplication", ItExpr.IsAny<CreditCardApplication>())
                 .Returns(true);
 
             var sut = new CreditCardApplicationEvaluator(mockValidator.Object, mockFraudLookup.Object);
