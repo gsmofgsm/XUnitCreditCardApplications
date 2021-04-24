@@ -177,7 +177,7 @@ namespace CreditCardApplications.Tests
 
             sut.Evaluate(application);
 
-            mockValidator.Verify(x => x.IsValid(It.IsAny<string>()));
+            mockValidator.Verify(x => x.IsValid(It.IsAny<string>()), "Frequentflynumer should be validated");
         }
     }
 }
